@@ -21,6 +21,14 @@ You can install the development version of walking from
 devtools::install_github("muschellij2/walking")
 ```
 
+`walking` no longer tries to install `forest` for you. Install `forest` in
+your own Python environment first, then load `walking` from R.
+
+If you hit the LLVM mismatch described in
+[onnela-lab/forest#293](https://github.com/onnela-lab/forest/issues/293) and
+[numba/llvmlite#1389](https://github.com/numba/llvmlite/issues/1389), use a
+Python environment where `forest` and its dependencies already resolve cleanly.
+
 ## Example
 
 This is a basic example which shows you how to solve a common problem:

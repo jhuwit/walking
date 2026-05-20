@@ -1,4 +1,5 @@
 testthat::test_that("preprocess_bout gives same as preprocess_bout_r", {
+  skip_if_no_forest()
   csv_file = system.file("test_data_bout.csv", package = "walking")
   testthat::skip_if_not_installed("readr")
   data = readr::read_csv(csv_file)

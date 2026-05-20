@@ -212,7 +212,7 @@ verisense_count_steps <- function(
     warning("Assuming data is a vector of VM!")
     acc = data
   } else {
-    data = standardize_data(data, subset = TRUE)
+    data = actibase::acti_standardize_data(data, subset_xyz = TRUE)
 
     acc <- sqrt(data$X^2 + data$Y^2 + data$Z^2)
     rm(data)

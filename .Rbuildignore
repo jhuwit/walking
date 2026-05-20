@@ -7,3 +7,6 @@
 ^R/peaks\.R$
 ^\.github$
 ^README\.Rmd$
+^\.positai$
+^\.claude$
+^todo\.txt$

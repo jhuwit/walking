@@ -27,7 +27,7 @@
 #'
 #' @examples
 #' csv_file = system.file("test_data_bout.csv", package = "walking")
-#' if (requireNamespace("readr", quietly = TRUE)) {
+#' if (requireNamespace("readr", quietly = TRUE) && reticulate::py_module_available("forest")) {
 #'   x = readr::read_csv(csv_file)
 #'   colnames(x)[colnames(x) == "UTC time"] = "time"
 #'   res = find_walking(data = x)

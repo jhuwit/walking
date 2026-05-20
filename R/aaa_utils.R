@@ -1,4 +1,12 @@
 oak_base = function() {
+  if (!reticulate::py_module_available("forest")) {
+    stop(
+      "Python package 'forest' is not installed in the active reticulate environment. ",
+      "Install it yourself before calling walking functions that use forest.\n",
+      "See https://github.com/onnela-lab/forest/issues/293 and ",
+      "https://github.com/numba/llvmlite/issues/1389."
+    )
+  }
   fr = reticulate::import("forest")
   oak = fr$oak$base
   oak

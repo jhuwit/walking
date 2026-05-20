@@ -13,7 +13,9 @@
 #' if (requireNamespace("readr", quietly = TRUE)) {
 #'   x = readr::read_csv(csv_file)
 #'   colnames(x)[colnames(x) == "UTC time"] = "time"
-#'   out = estimate_steps_forest(x, sample_rate_analysis = 10L)
+#'   if (reticulate::py_module_available("forest")) {
+#'     out = estimate_steps_forest(x, sample_rate_analysis = 10L)
+#'   }
 #'   out = estimate_steps_verisense(x, sample_rate = 10L,
 #'                                  method = "original")
 #'   out = estimate_steps_verisense(x, sample_rate = 10L,
@@ -41,20 +43,20 @@ estimate_steps_verisense = function(
   assertthat::assert_that(
     assertthat::is.flag(resample_to_15hz)
   )
-  data = standardize_data(data, subset = TRUE)
+  data = actibase::acti_standardize_data(data, subset_xyz = TRUE)
   args = list(...)
   if ("sample_rate" %in% names(args) &&
       resample_to_15hz) {
     warning("sample_rate will be ignored because resample_to_15hz is TRUE")
   }
   if (resample_to_15hz) {
-    data = resample_accel_data(
+    data = actibase::acti_resample(
       data = data,
       sample_rate = 15L
     )
     args$sample_rate = 15L
   }
-  seconds = unique(lubridate::floor_date(data$HEADER_TIMESTAMP))
+  seconds = unique(lubridate::floor_date(data$time))
   method = match.arg(method)
   func = switch(
     method,

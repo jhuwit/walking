@@ -30,14 +30,14 @@ sdt_count_steps <- function(
     verbose = TRUE
 ) {
 
-  peak = HEADER_TIMESTAMP = vm = X = Y = Z = demean_vm = filt_vm = NULL
+  time = peak = HEADER_TIMESTAMP = vm = X = Y = Z = demean_vm = filt_vm = NULL
   rm(list = c("vm", "X", "Y", "Z", "demean_vm", "filt_vm", "peak",
-              "HEADER_TIMESTAMP"))
+              "HEADER_TIMESTAMP", "time"))
   location = match.arg(location, choices = c("wrist", "waist"))
   # fixed thresholds for wrist and waist May23, 2025
   threshold = ifelse(location == "wrist", 0.0359, 0.0267)
 
-  data = standardize_data(data, subset = TRUE)
+  data = actibase::acti_standardize_data(data, subset_xyz = TRUE)
   assertthat::assert_that(
     assertthat::is.count(sample_rate)
   )
@@ -72,7 +72,7 @@ sdt_count_steps <- function(
     message("sdt completed")
   }
   data %>%
-    dplyr::group_by(time = lubridate::floor_date(HEADER_TIMESTAMP)) %>%
+    dplyr::group_by(time = lubridate::floor_date(time)) %>%
     dplyr::summarize(steps = sum(peak, na.rm = TRUE))
 
 }

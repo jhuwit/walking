@@ -16,10 +16,10 @@ testthat::test_that("standardize_data fails when needed", {
   colnames(data)[colnames(data) == "UTC time"] = "time"
   data$z = NULL
   testthat::expect_error({
-    standardize_data(data)
+    actibase::acti_standardize_data(data)
   })
   testthat::expect_error({
-    standardize_data(data, subset = FALSE)
+    actibase::acti_standardize_data(data, subset_xyz = FALSE)
   })
 })
 
@@ -30,14 +30,14 @@ testthat::test_that("standardize_data succeeds with resample_accel_data", {
   testthat::skip_if_not_installed("readr")
   data = readr::read_csv(csv_file)
   colnames(data)[colnames(data) == "UTC time"] = "time"
-  out = walking::standardize_data(data)
+  out = actibase::acti_standardize_data(data, colname_time = "HEADER_TIMESTAMP")
 
   testthat::expect_named(out, c("HEADER_TIMESTAMP", "X", "Y", "Z"))
   testthat::expect_true(nrow(out) == 98L)
 
-  out = walking::resample_accel_data(data, sample_rate = 30L)
+  out = actibase::acti_resample(data, sample_rate = 30L)
 
-  testthat::expect_named(out, c("HEADER_TIMESTAMP", "X", "Y", "Z"))
+  testthat::expect_named(out, c("time", "X", "Y", "Z"))
   testthat::expect_true(nrow(out) == 292L)
 
 })

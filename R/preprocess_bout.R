@@ -33,7 +33,8 @@ pythonize_data = function(data) {
   rm(list = "HEADER_TIMESTAMP")
   np = reticulate::import("numpy")
 
-  data = standardize_data(data, subset = TRUE)
+  data = actibase::acti_standardize_data(data, subset_xyz = TRUE,
+                                         colname_time = "HEADER_TIMESTAMP")
   stopifnot(
     all(
       c("HEADER_TIMESTAMP", "X", "Y", "Z") %in% colnames(data)
@@ -77,10 +78,11 @@ pythonize_data = function(data) {
 #' if (requireNamespace("readr", quietly = TRUE)) {
 #'   x = readr::read_csv(csv_file)
 #'   colnames(x)[colnames(x) == "UTC time"] = "time"
-#'
-#'   res = preprocess_bout(data = x)
-#'   res2 = preprocess_bout_r(data = x)
-#'   testthat::expect_equal(res$vm_bout, res2$vm_bout, tolerance = 1e-4)
+#'   if (reticulate::py_module_available("forest")) {
+#'     res = preprocess_bout(data = x)
+#'     res2 = preprocess_bout_r(data = x)
+#'     testthat::expect_equal(res$vm_bout, res2$vm_bout, tolerance = 1e-4)
+#'   }
 #' }
 preprocess_bout = function(data, sample_rate = 10L) {
   assertthat::assert_that(
