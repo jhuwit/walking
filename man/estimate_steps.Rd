@@ -2,11 +2,14 @@
 % Please edit documentation in R/api.R
 \name{estimate_steps_forest}
 \alias{estimate_steps_forest}
+\alias{have_forest}
 \alias{estimate_steps_verisense}
 \alias{estimate_steps_sdt}
 \title{Estimate Steps with Unified Syntax}
 \usage{
 estimate_steps_forest(data, ...)
+
+have_forest()
 
 estimate_steps_verisense(
   data,

@@ -25,6 +25,12 @@ estimate_steps_forest = function(data, ...) {
   find_walking(data, ...)
 }
 
+#' @export
+#' @rdname estimate_steps
+have_forest = function() {
+  reticulate::py_module_available("forest")
+}
+
 #' @rdname estimate_steps
 #' @param method Either using the original parameters [verisense_count_steps()]
 #' or the revised parameters [verisense_count_steps_revised()]
