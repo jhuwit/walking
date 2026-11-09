@@ -14,13 +14,17 @@ cleanup_uv_lock_files = function(paths = c(".", tempdir(), dirname(tempdir()))) 
   lock_files = unique(lock_files[file.exists(lock_files)])
 
   if (length(lock_files) > 0) {
-    invisible(file.remove(lock_files))
+    unlink(lock_files, force = TRUE)
+    invisible(!file.exists(lock_files))
   } else {
     invisible(logical())
   }
 }
 
 oak_base = function() {
+  # checking/importing forest can trigger a uv environment build that
+  # leaves uv-*.lock files in the temp directory (e.g. a failed numba build)
+  on.exit(cleanup_uv_lock_files(), add = TRUE)
   if (!reticulate::py_module_available("forest")) {
     stop(
       "Python package 'forest' is not installed in the active reticulate environment. ",

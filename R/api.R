@@ -36,6 +36,7 @@ estimate_steps_forest = function(data, ...) {
 #' @export
 #' @rdname estimate_steps
 have_forest = function() {
+  on.exit(cleanup_uv_lock_files(), add = TRUE)
   reticulate::py_module_available("forest")
 }
 

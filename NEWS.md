@@ -6,6 +6,11 @@
   `k / 2` samples of the start of the signal, which the `"original"` finder
   (and the reference Verisense implementation) rejects. The two finders now
   give identical results.
+* `py_require_forest()` now pins `numba==0.62.1` and `llvmlite==0.45.1` on
+  Intel (x86_64) macOS, since newer releases ship no wheels for that platform
+  and source builds fail with Apple clang (`unsupported option '-fopenmp'`).
+* `have_forest()` and the internal forest loader now clean up `uv-*.lock`
+  files left in the temp directory by a uv environment build.
 
 # walking 0.8.1
 

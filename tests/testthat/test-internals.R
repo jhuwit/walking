@@ -29,3 +29,13 @@ testthat::test_that("create_peak_info and rowWhichMaxIndex return expected value
 
   testthat::expect_equal(rowWhichMaxIndex(index_mat, value_mat), c(2, 4))
 })
+
+testthat::test_that("intel_mac_pins only pins on Intel macOS", {
+  testthat::expect_equal(
+    intel_mac_pins("Darwin", "x86_64"),
+    c("numba==0.62.1", "llvmlite==0.45.1")
+  )
+  testthat::expect_length(intel_mac_pins("Darwin", "arm64"), 0L)
+  testthat::expect_length(intel_mac_pins("Linux", "x86_64"), 0L)
+  testthat::expect_length(intel_mac_pins("Windows", "x86-64"), 0L)
+})
