@@ -71,3 +71,23 @@ testthat::test_that("verisense_count_steps gives same  works", {
   testthat::expect_equal(res3, rep(0, length(res3)))
 })
 
+
+testthat::test_that("fast and original peak finders agree, including at signal start", {
+  set.seed(20261109)
+  for (k in c(3, 4, 5, 6, 7, 9)) {
+    for (round_digits in c(NA, 1)) {
+      n_samples = 700
+      acc = runif(n_samples, 0, 3)
+      if (!is.na(round_digits)) acc = round(acc, round_digits)
+      # force a segment max within half_k of the start
+      acc[1] = 10
+      half_k = round(k / 2)
+      segments = floor(n_samples / k)
+      peak_info = create_peak_info(segments)
+      original = find_peak_location(segments, acc, n_samples, k, half_k, peak_info)
+      fast = find_peak_location_fast(segments, acc, n_samples, k, half_k, peak_info)
+      testthat::expect_equal(fast, original, info = paste0("k = ", k))
+      testthat::expect_true(is.na(fast$peak_location[1]))
+    }
+  }
+})

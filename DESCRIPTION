@@ -1,6 +1,6 @@
 Package: walking
 Title: Segments Accelerometry Data into Walking Bouts using Open Source Methods
-Version: 0.8.2
+Version: 0.9.0
 Authors@R: 
     person(given = "John",
            family = "Muschelli",
@@ -14,6 +14,8 @@ Description: Segments walking from accelerometry data using 'forest' python
     and Step Detection Threshold (SDT) from Ducharme (2021) 
     <doi:10.1123/jmpb.2021-0011> methods.
 License: GPL (>= 3)
+Depends:
+    R (>= 4.1.0)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 Imports: 
@@ -21,7 +23,6 @@ Imports:
     assertthat,
     dplyr,
     lubridate,
-    magrittr,
     matrixStats,
     reticulate (>= 1.42.0),
     signal,
@@ -30,4 +31,4 @@ Suggests:
     readr,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
-Config/roxygen2/version: 8.0.0
+Config/roxygen2/version: 8.1.1

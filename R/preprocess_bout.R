@@ -43,7 +43,7 @@ pythonize_data = function(data) {
 
   orig_tz = lubridate::tz(data$HEADER_TIMESTAMP)
   data$HEADER_TIMESTAMP = as.numeric(data$HEADER_TIMESTAMP)
-  data = data %>%
+  data = data |>
     dplyr::arrange(HEADER_TIMESTAMP)
   timestamp = np$array(data$HEADER_TIMESTAMP, dtype = "float64")
   x = np$array(data[["X"]], dtype="float64")

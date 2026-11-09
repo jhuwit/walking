@@ -20,9 +20,9 @@ testthat::test_that("find_walking gives fixed answer", {
 
   data = xdata
 
-  data = data %>%
+  data = data |>
     # need use case for standardize data
-    dplyr::rename(HEADER_TIMESTAMP = time) %>%
+    dplyr::rename(HEADER_TIMESTAMP = time) |>
     # need use case in mm/s^2
     dplyr::mutate(
       x = x * 9.80665,

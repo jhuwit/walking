@@ -51,8 +51,8 @@ sdt_count_steps <- function(
   )
 
   # demean and filter data with dual pass filter to avoid signal shift
-  data <- data %>%
-    dplyr::ungroup() %>%
+  data <- data |>
+    dplyr::ungroup() |>
     dplyr::mutate(
       vm = sqrt(X^2 + Y^2 + Z^2),
       demean_vm = vm - mean(vm),
@@ -60,7 +60,7 @@ sdt_count_steps <- function(
 
   # find indices in which the value immediately before and immediately
   # after the value is smaller and vm is above threshold
-  data <- data %>%
+  data <- data |>
     dplyr::mutate(peak =
                     filt_vm > dplyr::lag(filt_vm) &
                     filt_vm > dplyr::lead(filt_vm) &
@@ -71,8 +71,8 @@ sdt_count_steps <- function(
     # return steps by second
     message("sdt completed")
   }
-  data %>%
-    dplyr::group_by(time = lubridate::floor_date(time)) %>%
+  data |>
+    dplyr::group_by(time = lubridate::floor_date(time)) |>
     dplyr::summarize(steps = sum(peak, na.rm = TRUE))
 
 }

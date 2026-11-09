@@ -57,36 +57,36 @@ find_peak_location_fast = function(segments, acc, n_samples,
   df = data.frame(acc = acc)
 
   # create the windows so they can be reshaped
-  df = df %>%
+  df = df |>
     dplyr::mutate(
       row_num = 1:nrow(df),
       segment = cumsum((row_num %% k) == 1),
       index = rep(1:k, length = nrow(df)))
-  df = df %>%
+  df = df |>
     dplyr::filter(segment <= segments)
   # make the indices on the whole acc
-  wide_index = df %>%
-    dplyr::select(-acc) %>%
+  wide_index = df |>
+    dplyr::select(-acc) |>
     tidyr::pivot_wider(
       values_from = row_num,
       names_from = index,
       # need fill for last segment
       values_fill = NA)
   rm(df)
-  wide_index = wide_index %>%
-    dplyr::select(-dplyr::any_of("segment")) %>%
+  wide_index = wide_index |>
+    dplyr::select(-dplyr::any_of("segment")) |>
     as.matrix()
   stopifnot(nrow(wide_index) == nrow(peak_info))
 
   if (FALSE) {
     # old way of doing things - not needed
-    # wide = df %>%
-    #   dplyr::select(-row_num) %>%
+    # wide = df |>
+    #   dplyr::select(-row_num) |>
     #   tidyr::pivot_wider(values_from = acc, names_from = index,
     #                      # need fill for last segment
     #                      values_fill = -100)
-    # wide = wide %>%
-    #   dplyr::select(-dplyr::any_of("segment")) %>%
+    # wide = wide |>
+    #   dplyr::select(-dplyr::any_of("segment")) |>
     #   as.matrix()
   } else {
     wide = array(acc[wide_index], dim = dim(wide_index))
@@ -123,7 +123,11 @@ find_peak_location_fast = function(segments, acc, n_samples,
   check_loc = rowWhichMaxIndex(new_index, new_wide)
 
   # if they are the same index, then it's a peak!
-  keep = check_loc == tmp_loc_b
+  # The original (reference) implementation truncates the check window at the
+  # start of the signal, which means a peak within half_k samples of the start
+  # can never be at the center of the window, so it's always rejected.
+  # Match that here rather than padding with NA.
+  keep = check_loc == tmp_loc_b & from >= 1
   peak_info[keep, "peak_location"] <- tmp_loc_b[keep]
   peak_info[keep, "acc_magnitude"] <- rmax[keep]
   return(peak_info)
